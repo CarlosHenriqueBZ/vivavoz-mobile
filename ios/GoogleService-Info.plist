@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>712637807765-uac42pbv7vdctqc3frufm25d3prbt46r.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.712637807765-uac42pbv7vdctqc3frufm25d3prbt46r</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>712637807765-och9mi36csldcsbfn4puhr5oahnuvk0p.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyByljpJI7q5Q_563Fjvzjnyw0L7fsiZ81U</string>
+	<key>GCM_SENDER_ID</key>
+	<string>712637807765</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.app.vivavoz</string>
+	<key>PROJECT_ID</key>
+	<string>app-viva-voz</string>
+	<key>STORAGE_BUCKET</key>
+	<string>app-viva-voz.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:712637807765:ios:51ca4ef01f4cf33d962f9c</string>
+</dict>
+</plist>

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "712637807765",
+    "project_id": "app-viva-voz",
+    "storage_bucket": "app-viva-voz.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:712637807765:android:1de839e96343491f962f9c",
+        "android_client_info": {
+          "package_name": "com.app.vivavoz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "712637807765-och9mi36csldcsbfn4puhr5oahnuvk0p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.vivavoz",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "712637807765-kj7u599klovlc39r54nvgohif5k1jvsh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGTtkPGK0yHG0L5JVId1A-P7nZH0m3N4E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "712637807765-kj7u599klovlc39r54nvgohif5k1jvsh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
