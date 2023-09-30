@@ -5,13 +5,14 @@ import {useAuth} from '../../hooks/auth';
 import {useNavigation} from '@react-navigation/native';
 import analytics from '@react-native-firebase/analytics';
 
-import ResearchSection from '../../components/Dashboard/ResearchSection';
 import FinancialSection from '../../components/Dashboard/FinancialSection';
 
 import {sync} from '../../services/sync';
 
 import vivaVozIcon from '../../assets/logo/1x/vivaVozIcon.png';
 import covidIcon from '../../assets/icone-covid.png';
+import searchIcon from '../../assets/icone-busca.png';
+
 
 import {database} from '../../data/database';
 
@@ -83,7 +84,8 @@ const Dashboard: React.FC = () => {
             <WelcomeUser>
               <WelcomeUserGreeting>Olá,</WelcomeUserGreeting>
               <WelcomeUserName>
-                {worker.first_name + ' ' + worker.last_name}
+                {/* {worker.first_name + ' ' + worker.last_name} */}
+                VivaVoz
               </WelcomeUserName>
             </WelcomeUser>
             <UserLogoutContainer onPress={() => handleSignOut()}>
@@ -141,6 +143,22 @@ const Dashboard: React.FC = () => {
               </ShortcutDetail>
               <Icon name="chevron-right" size={24} color="#F38725" />
             </ShortcutButton>
+
+            <ShortcutButton
+              onPress={() => navigation.navigate('ResearchSection')}>
+              <ShortcutDetail>
+                <ShortcutDeatailIcon>
+                  <Image
+                    source={searchIcon}
+                    resizeMode="contain"
+                    resizeMethod="resize"
+                    style={{height: 32}}
+                  />
+                </ShortcutDeatailIcon>
+                <ShortcutName>Pesquisas</ShortcutName>
+              </ShortcutDetail>
+              <Icon name="chevron-right" size={24} color="#F38725" />
+            </ShortcutButton>
           </HomeShortcutsButtons>
 
           {fillProfile && (
@@ -153,8 +171,6 @@ const Dashboard: React.FC = () => {
           )}
 
           <FinancialSection />
-
-          <ResearchSection />
         </Content>
       </Container>
     </InnerPages>

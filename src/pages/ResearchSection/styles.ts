@@ -3,6 +3,7 @@ import { RectButton } from 'react-native-gesture-handler';
 
 export const Container = styled.View`
   margin: 24px 16px;
+  margin-top: 50px;
 `;
 
 export const IntroContainer= styled.View`
@@ -11,6 +12,13 @@ export const IntroContainer= styled.View`
   border-color: #333;
   margin-bottom: 16px;
 `
+
+export const Title = styled.Text`
+  font-family: 'AvenirNextLTPro-Bold';
+  font-size: 32px;
+  color: #006633;
+  margin-bottom: 8px;
+`;
 
 export const IntroText = styled.Text`
   font-weight: bold;

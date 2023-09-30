@@ -159,22 +159,6 @@ const IsSyndicateApprovedTrue: React.FC<IProps> = ({worker}) => {
               <Icon name="chevron-right" size={24} color="#F38725" />
             </ShortcutButton>
 
-            <ShortcutButton
-              onPress={() => navigation.navigate('Invoices')}
-              style={{
-                shadowColor: '#000000',
-                shadowOpacity: 0.15,
-                shadowRadius: 4,
-                shadowOffset: {width: 0, height: 0},
-              }}>
-              <ShortcutDetail>
-                <ShortcutDeatailIcon>
-                  <Icon name="dollar-sign" size={24} color="#F38725" />
-                </ShortcutDeatailIcon>
-                <ShortcutName>Contribuições</ShortcutName>
-              </ShortcutDetail>
-              <Icon name="chevron-right" size={24} color="#F38725" />
-            </ShortcutButton>
           </HomeShortcutsButtons>
         </>
       )}

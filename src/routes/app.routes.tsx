@@ -18,6 +18,8 @@ import Success from '../pages/Research/Success';
 import EditProfile from '../pages/Menu/EditProfile';
 // import Notifications from '../pages/Notifications'
 import Invoices from '../pages/Invoices';
+import ResearchSection from '../pages/ResearchSection';
+
 
 import News from '../pages/News';
 import ShowNews from '../pages/News/Show';
@@ -84,13 +86,13 @@ const HomeTab: React.FC = () => {
       <HomeStack.Screen
         name="NewComplaint"
         component={NewComplaint}
-        options={({ navigation })=>({
+        options={({navigation}) => ({
           title: 'Nova denúncia',
           headerLeft: () => (
             <HeaderBackButton
               tintColor="#ffffff"
               onPress={() => {
-                dispatch({ type: 'CLEAR_STATE' });
+                dispatch({type: 'CLEAR_STATE'});
                 navigation.navigate('Dashboard');
               }}
               label="Voltar"
@@ -141,6 +143,11 @@ const HomeTab: React.FC = () => {
             fontFamily: 'AvenirNextLTPro-Demi',
           },
         }}
+      />
+      <HomeStack.Screen
+        name="ResearchSection"
+        component={ResearchSection}
+        options={{headerShown: false}}
       />
       {/* <HomeStack.Screen
           name="Notifications"
@@ -213,6 +220,7 @@ const SyndicateTab: React.FC = () => {
         component={Invoices}
         options={{headerShown: false}}
       />
+
       {/* <SyndicateStack.Screen name="Notifications" component={NotificationsNav} options={{headerShown: false}} /> */}
     </SyndicateStack.Navigator>
   );
