@@ -8,6 +8,7 @@ import {useNavigation} from '@react-navigation/native';
 import {TextInputMask} from 'react-native-masked-text';
 import {View} from 'react-native';
 import analytics from '@react-native-firebase/analytics';
+import cpf from 'cpf';
 
 import api from '../../services/api';
 
@@ -46,20 +47,30 @@ const SignUp: React.FC = () => {
     setIsSwitchOn(value);
   };
 
-  const handleCreateAccount = useCallback(async values => {
-    try {
-      await api.post('/workers', values);
-      await analytics().logSignUp({
-        method: 'email',
-      });
-      navigation.navigate('AccountCreated');
-    } catch {
-      Alert.alert(
-        'Erro no cadastro',
-        'Ocorreu um erro ao fazer o cadastro, cheque as credenciais ou tente fazer o login.',
-      );
+  
+const handleCreateAccount = useCallback(async values => {
+  try {
+    const {cpf: rawCpf, ...rest} = values;
+    const formattedCpf = rawCpf.replace(/[^\d]+/g, ''); // Remove caracteres não numéricos
+
+    if (!cpf.isValid(formattedCpf)) {
+      Alert.alert('CPF Inválido', 'Por favor, insira um CPF válido.');
+      return;
     }
-  }, []);
+
+    // Se o CPF for válido, continue com o cadastro
+    await api.post('/workers', {...rest, cpf: formattedCpf});
+    await analytics().logSignUp({
+      method: 'email',
+    });
+    navigation.navigate('AccountCreated');
+  } catch {
+    Alert.alert(
+      'Erro no cadastro',
+      'Ocorreu um erro ao fazer o cadastro, cheque as credenciais ou tente fazer o login.',
+    );
+  }
+}, []);
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required('O nome é obrigatório.'),
