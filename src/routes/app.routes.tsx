@@ -16,6 +16,10 @@ import PhoneComplaintConfirmation from '../components/PhoneComplaintConfirmation
 import Research from '../pages/Research';
 import Success from '../pages/Research/Success';
 import EditProfile from '../pages/Menu/EditProfile';
+import About from '../pages/About';
+import Terms from '../pages/Terms';
+
+
 // import Notifications from '../pages/Notifications'
 import Invoices from '../pages/Invoices';
 import ResearchSection from '../pages/ResearchSection';
@@ -238,6 +242,18 @@ const MenuTab: React.FC = () => {
         options={{headerShown: false}}
         name="EditProfile"
         component={EditProfile}
+      />
+
+      <MenuStack.Screen
+        options={{headerShown: false}}
+        name="About"
+        component={About}
+      />
+
+      <MenuStack.Screen
+        options={{headerShown: false}}
+        name="Terms"
+        component={Terms}
       />
       {/* <MenuStack.Screen options={{headerShown: false}} name="Notifications" component={NotificationsNav} /> */}
     </MenuStack.Navigator>

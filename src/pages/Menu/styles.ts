@@ -2,18 +2,23 @@ import { RectButton } from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
-  flex: 1;
+  flex: 3;
   background: #006633;
+`;
+
+export const ContentContainer = styled.ScrollView`
+  flex: 1;
 `;
 
 export const Content = styled.View`
   background: #f7f7f7;
-  flex: 1;
+  flex: 2;
   align-items: center;
   margin-top: 96px;
   border-top-right-radius: 25px;
   border-top-left-radius: 25px;
   padding: 0 16px;
+  overlowY: auto;
 `;
 
 export const Worker = styled.View`
@@ -50,6 +55,8 @@ export const HomeShortcutsButtons = styled.View`
   flex: 1;
   flex-direction: column;
 `;
+
+
 
 export const ShortcutButton = styled(RectButton)`
   background: #ffffff;
