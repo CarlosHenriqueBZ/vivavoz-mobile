@@ -19,6 +19,9 @@ import {
 } from './styles';
 import format from 'date-fns/format';
 import {Text} from 'react-native-paper';
+import { useAuth } from '../../hooks/auth';
+import { NextStep, NextStepText } from '../Research/styles';
+import { IntroTextContainer, IntroTextContent } from './Show/styles';
 
 interface ICategory {
   id: string;
@@ -45,9 +48,12 @@ interface IPost {
 
 const News: React.FC = () => {
   const navigation = useNavigation();
+    const {worker, updateWorker} = useAuth();
 
   const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState<IPost[]>();
+
+
 
   useEffect(() => {
     const loadData = async () => {
@@ -67,27 +73,27 @@ const News: React.FC = () => {
       {loading && <AppLoadingState />}
       {posts?.length ? (
         <Container>
-          <FlatList
-            ListHeaderComponent={
+          {worker.is_syndicate_approved === null ? (
+            <Container>
               <FeatureContainer
                 onPress={() =>
                   navigation.navigate('ShowNews', {id: posts[0]?.id})
                 }>
                 <>
-                  {posts[0]?.featured_image !== null && (
-                    <FeatureImage source={{uri: posts[0]?.featured_image}} />
+                  {posts[1]?.featured_image !== null && (
+                    <FeatureImage source={{uri: posts[1]?.featured_image}} />
                   )}
-                  <FeatureTitle>{posts[0]?.title}</FeatureTitle>
+                  <FeatureTitle>{posts[1]?.title}</FeatureTitle>
                   <FeatureInfoContainer>
                     <FeatureInfo>
-                      {posts[0]?.categories
+                      {posts[1]?.categories
                         .map(category => category.title)
                         .join(', ')}
                     </FeatureInfo>
                     <FeatureInfo>
-                      {posts[0]
+                      {posts[1]
                         ? format(
-                            new Date(posts[0]?.publishedAt),
+                            new Date(posts[1]?.publishedAt),
                             "dd/MM/yyyy 'às' HH:mm",
                           )
                         : format(new Date(), "dd/MM/yyyy 'às' HH:mm")}
@@ -95,13 +101,55 @@ const News: React.FC = () => {
                   </FeatureInfoContainer>
                 </>
               </FeatureContainer>
-            }
-            data={posts}
-            keyExtractor={post => post.id}
-            renderItem={({item, index}) => (
-              <PostItemList post={item} index={index} />
-            )}
-          />
+              <IntroTextContainer>
+                <IntroTextContent>
+                  Desbloqueie um universo de informações exclusivas!
+                  Sindicalize-se agora para ter acesso a todas as notícias.
+                </IntroTextContent>
+              </IntroTextContainer>
+              <FeatureContainer>
+                <NextStep onPress={() => navigation.navigate('Sindicato')}>
+                  <NextStepText>Solicitar sindicalização</NextStepText>
+                </NextStep>
+              </FeatureContainer>
+            </Container>
+          ) : (
+            <FlatList
+              ListHeaderComponent={
+                <FeatureContainer
+                  onPress={() =>
+                    navigation.navigate('ShowNews', {id: posts[0]?.id})
+                  }>
+                  <>
+                    {posts[0]?.featured_image !== null && (
+                      <FeatureImage source={{uri: posts[0]?.featured_image}} />
+                    )}
+                    <FeatureTitle>{posts[0]?.title}</FeatureTitle>
+                    <FeatureInfoContainer>
+                      <FeatureInfo>
+                        {posts[0]?.categories
+                          .map(category => category.title)
+                          .join(', ')}
+                      </FeatureInfo>
+                      <FeatureInfo>
+                        {posts[0]
+                          ? format(
+                              new Date(posts[0]?.publishedAt),
+                              "dd/MM/yyyy 'às' HH:mm",
+                            )
+                          : format(new Date(), "dd/MM/yyyy 'às' HH:mm")}
+                      </FeatureInfo>
+                    </FeatureInfoContainer>
+                  </>
+                </FeatureContainer>
+              }
+              data={posts}
+              keyExtractor={post => post.id}
+              renderItem={({item, index}) => (
+                <PostItemList post={item} index={index} />
+              )}
+            />
+          )}
         </Container>
       ) : (
         <Container>

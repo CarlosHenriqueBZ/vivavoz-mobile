@@ -36,3 +36,18 @@ export const Credits = styled.Text`
   font-style: italic;
   font-size: 12px;
 `;
+
+export const IntroTextContent = styled.Text`
+  font-family: 'AvenirNextLTPro-Demi';
+  font-size: 20px;
+  line-height: 28px;
+  color: #ffffff;
+   text-align: left;
+`;
+
+export const IntroTextContainer = styled.View`
+  margin: 0 16px;
+  background: #f38725;
+  padding: 24px;
+  border-radius: 16px;
+`;

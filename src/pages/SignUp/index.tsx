@@ -51,20 +51,19 @@ const SignUp: React.FC = () => {
 const handleCreateAccount = useCallback(async values => {
   try {
     const {cpf: rawCpf, ...rest} = values;
-    const formattedCpf = rawCpf.replace(/[^\d]+/g, ''); // Remove caracteres não numéricos
+    const formattedCpf = rawCpf.replace(/[^\d]+/g, '');
 
     if (!cpf.isValid(formattedCpf)) {
       Alert.alert('CPF Inválido', 'Por favor, insira um CPF válido.');
       return;
     }
 
-    // Se o CPF for válido, continue com o cadastro
-    await api.post('/workers', {...rest, cpf: formattedCpf});
+    await api.post('/workers', {...rest, cpf: rawCpf});
     await analytics().logSignUp({
       method: 'email',
     });
     navigation.navigate('AccountCreated');
-  } catch {
+  } catch(error) {
     Alert.alert(
       'Erro no cadastro',
       'Ocorreu um erro ao fazer o cadastro, cheque as credenciais ou tente fazer o login.',

@@ -151,7 +151,19 @@ const HomeTab: React.FC = () => {
       <HomeStack.Screen
         name="ResearchSection"
         component={ResearchSection}
-        options={{headerShown: false}}
+        options={{
+          title: 'Pesquisas',
+          headerBackTitleVisible: false,
+          headerStyle: {
+            backgroundColor: '#006633',
+            elevation: 0,
+            shadowOpacity: 0,
+          },
+          headerTintColor: '#ffffff',
+          headerTitleStyle: {
+            fontFamily: 'AvenirNextLTPro-Demi',
+          },
+        }}
       />
       {/* <HomeStack.Screen
           name="Notifications"
@@ -267,6 +279,11 @@ const NewsTab: React.FC = () => {
         options={{headerShown: false}}
         name="News"
         component={News}
+      />
+      <NewsStack.Screen
+        options={{headerShown: false}}
+        name="Sindicato"
+        component={SyndicateTab}
       />
       <NewsStack.Screen
         options={{headerShown: false}}

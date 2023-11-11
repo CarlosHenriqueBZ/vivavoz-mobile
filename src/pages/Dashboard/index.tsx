@@ -84,8 +84,7 @@ const Dashboard: React.FC = () => {
             <WelcomeUser>
               <WelcomeUserGreeting>Olá,</WelcomeUserGreeting>
               <WelcomeUserName>
-                {/* {worker.first_name + ' ' + worker.last_name} */}
-                VivaVoz
+                {worker.first_name + ' ' + worker.last_name}
               </WelcomeUserName>
             </WelcomeUser>
             <UserLogoutContainer onPress={() => handleSignOut()}>
@@ -123,7 +122,7 @@ const Dashboard: React.FC = () => {
                 <ShortcutDeatailIcon>
                   <Icon name="eye" size={24} color="#F38725" />
                 </ShortcutDeatailIcon>
-                <ShortcutName>Relatar problema</ShortcutName>
+                <ShortcutName>Acompanhar problema</ShortcutName>
               </ShortcutDetail>
               <Icon name="chevron-right" size={24} color="#F38725" />
             </ShortcutButton>

@@ -40,6 +40,7 @@ const NewComplaint: React.FC = () => {
   const [unions, setUnions] = useState<any>([]);
   const [companies, setCompanies] = useState<any>([]);
   const [cities, setCities] = useState<any>([]);
+
   const [loading, setLoading] = useState(false);
 
   const [selectedState, setSelectedState] = useState<string>(
@@ -131,6 +132,10 @@ const NewComplaint: React.FC = () => {
       handleSelectedCompany(complaintState.complaint.companyId);
     }
   }, []);
+
+  const sortedCompanies = companies.slice().sort((a, b) => {
+    return a._raw?.nome_fantasia.localeCompare(b._raw?.nome_fantasia);
+  });
 
   const validateComplaint = Yup.object().shape({
     state: Yup.string().required('* Campo obrigatório.'),
@@ -246,7 +251,7 @@ const NewComplaint: React.FC = () => {
                       color={'#b2b2b2'}
                       key="0"
                     />
-                    {companies.map(({_raw: company}: {_raw: any}) => {
+                    {sortedCompanies.map(({_raw: company}: {_raw: any}) => {
                       return (
                         <Picker.Item
                           label={company.nome_fantasia}

@@ -27,7 +27,9 @@ import {
   RadioLabelContainer,
   RadioLabel,
 } from './styles';
+import states from './states';
 
+console.log
 interface IState{
   nome: string;
   uf: string;
@@ -58,7 +60,7 @@ const IsSyndicateApprovedFalse: React.FC<IProps> = ({handleLoading, handleWorker
     return new UnionsRepository(database);
   }, [])
 
-  const [states, setStates] = useState<IState[]>([]);
+
   const [cities, setCities] = useState<ICity[]>([]);
   const [originCities, setOriginCities] = useState<ICity[]>([])
   const [unions, setUnions] = useState<ISyndicate[]>([]);
@@ -151,181 +153,203 @@ const IsSyndicateApprovedFalse: React.FC<IProps> = ({handleLoading, handleWorker
 
   useEffect(()=>{
     const loadData = async () => {
-      await api.get('/ibge/states').then((response)=>setStates(response.data));
       await unionsRepository.getAll().then((response) => setUnions(response));
     }
 
     loadData();
   }, [])
 
-  return(
-        <>
-          <Text style={{fontSize: 16}}>Sindicalize-se preenchendo o formulário abaixo:</Text>
+  return (
+    <>
+      <Text style={{fontSize: 16}}>
+        Sindicalize-se preenchendo o formulário abaixo:
+      </Text>
 
-          <Formik
-            initialValues={{
-              rg: undefined,
-              situation: undefined,
-              address: undefined,
-              city_id: undefined,
-              state: undefined,
-              postal_code: undefined,
-              is_temporary_address: undefined,
-              origin_address: undefined,
-              origin_city_id: undefined,
-              origin_state: undefined,
-              origin_postal_code: undefined,
-              salary_range: 0,
-              syndicate_id: undefined,
-              is_discount_agreed:  false,
-            }}
-            onSubmit={(values)=>handleSubmitUnionization(values)}
-            validationSchema={validationSchema}
-          >
-            {({values, handleSubmit, handleChange, handleBlur, setFieldValue, errors})=>(
-              <FormContainer>
-                <SelectContainer>
-                  <SelectLabel>RG</SelectLabel>
-                  <Input
-                  placeholder="Digite aqui o RG"
-                  keyboardType="default"
-                  autoCorrect={false}
-                  autoCapitalize="characters"
-                  returnKeyType="next"
-                  onBlur={handleBlur('rg')}
-                  value={values.rg}
-                  onChangeText={handleChange('rg')}
+      <Formik
+        initialValues={{
+          rg: undefined,
+          situation: undefined,
+          address: undefined,
+          city_id: undefined,
+          state: undefined,
+          postal_code: undefined,
+          is_temporary_address: undefined,
+          origin_address: undefined,
+          origin_city_id: undefined,
+          origin_state: undefined,
+          origin_postal_code: undefined,
+          salary_range: 0,
+          syndicate_id: undefined,
+          is_discount_agreed: false,
+        }}
+        onSubmit={values => handleSubmitUnionization(values)}
+        validationSchema={validationSchema}>
+        {({
+          values,
+          handleSubmit,
+          handleChange,
+          handleBlur,
+          setFieldValue,
+          errors,
+        }) => (
+          <FormContainer>
+            <SelectContainer>
+              <SelectLabel>RG</SelectLabel>
+              <Input
+                placeholder="Digite aqui o RG"
+                keyboardType="default"
+                autoCorrect={false}
+                autoCapitalize="characters"
+                returnKeyType="next"
+                onBlur={handleBlur('rg')}
+                value={values.rg}
+                onChangeText={handleChange('rg')}
+              />
+            </SelectContainer>
+            {errors.rg && <SelectError>{errors.rg}</SelectError>}
+
+            <SelectContainer>
+              <SelectLabel>Situação de trabalho</SelectLabel>
+              <Select
+                selectedValue={fieldSituation}
+                onValueChange={(value: any) => {
+                  setFieldSituation(value);
+                  setFieldValue('situation', value);
+                }}>
+                <Picker.Item
+                  label="Selecione o seu perfil de atividade"
+                  value=""
+                  color={'#b2b2b2'}
+                  key="0"
                 />
-                </SelectContainer>
-                {errors.rg && <SelectError>{errors.rg}</SelectError>}
-
-                <SelectContainer>
-                  <SelectLabel>Situação de trabalho</SelectLabel>
-                  <Select
-                    selectedValue={fieldSituation}
-                    onValueChange={(value: any)=>{
-                      setFieldSituation(value);
-                      setFieldValue('situation', value);
-                    }}
-                  >
-                    <Picker.Item
-                      label="Selecione o seu perfil de atividade"
-                      value=""
-                      color={'#b2b2b2'}
-                      key="0"
-                    />
-                    <Picker.Item label="Permanente" value="permanent" key="permanent" />
-                    <Picker.Item label="Temporário" value="temporary" key="temporary" />
-                  </Select>
-                </SelectContainer>
-
-                <SelectContainer>
-                  <SelectLabel>Endereço</SelectLabel>
-                  <Input
-                  placeholder="Digite aqui o seu endereço completo"
-                  keyboardType="default"
-                  autoCorrect={false}
-                  autoCapitalize="words"
-                  returnKeyType="next"
-                  onBlur={handleBlur('address')}
-                  value={values.address}
-                  onChangeText={handleChange('address')}
+                <Picker.Item
+                  label="Permanente"
+                  value="permanent"
+                  key="permanent"
                 />
-                </SelectContainer>
-                {errors.address && <SelectError>{errors.address}</SelectError>}
+                <Picker.Item
+                  label="Temporário"
+                  value="temporary"
+                  key="temporary"
+                />
+              </Select>
+            </SelectContainer>
 
-                <SelectContainer>
-                  <SelectLabel>Estado</SelectLabel>
-                  <Select
-                    selectedValue={fieldState}
-                    onValueChange={async (value: any)=>{
-                      setFieldState(value);
-                      handleStateChange(value);
-                      setFieldValue('state', value);
-                      await updateUnionsList(value);
+            <SelectContainer>
+              <SelectLabel>Endereço</SelectLabel>
+              <Input
+                placeholder="Digite aqui o seu endereço completo"
+                keyboardType="default"
+                autoCorrect={false}
+                autoCapitalize="words"
+                returnKeyType="next"
+                onBlur={handleBlur('address')}
+                value={values.address}
+                onChangeText={handleChange('address')}
+              />
+            </SelectContainer>
+            {errors.address && <SelectError>{errors.address}</SelectError>}
+
+            <SelectContainer>
+              <SelectLabel>Estado</SelectLabel>
+              <Select
+                selectedValue={fieldState}
+                onValueChange={async (value: any) => {
+                  setFieldState(value);
+                  handleStateChange(value);
+                  setFieldValue('state', value);
+                  await updateUnionsList(value);
+                }}>
+                <Picker.Item
+                  label="Selecione o seu Estado"
+                  value=""
+                  color={'#b2b2b2'}
+                  key="0"
+                />
+                {states.map(state => (
+                  <Picker.Item
+                    label={state.label}
+                    value={state.value}
+                    key={state.label}
+                  />
+                ))}
+              </Select>
+            </SelectContainer>
+            {errors.state && <SelectError>{errors.state}</SelectError>}
+
+            <SelectContainer>
+              <SelectLabel>Cidade</SelectLabel>
+              <Select
+                selectedValue={fieldCity}
+                onValueChange={(value: any) => {
+                  setFieldCity(value);
+                  setFieldValue('city_id', value);
+                }}>
+                <Picker.Item
+                  label="Selecione a sua Cidade"
+                  value=""
+                  color={'#b2b2b2'}
+                  key="0"
+                />
+                {cities.map(city => (
+                  <Picker.Item
+                    label={city.nome}
+                    value={city.id}
+                    key={city.id}
+                  />
+                ))}
+              </Select>
+            </SelectContainer>
+            {errors.city_id && <SelectError>{errors.city_id}</SelectError>}
+
+            <SelectContainer>
+              <SelectLabel>CEP</SelectLabel>
+              <TextInputMask
+                type={'zip-code'}
+                placeholder="Digite aqui o seu CEP completo"
+                keyboardType="number-pad"
+                returnKeyType="next"
+                onBlur={handleBlur('postal_code')}
+                value={values.postal_code}
+                onChangeText={handleChange('postal_code')}
+                style={{paddingVertical: 8}}
+              />
+            </SelectContainer>
+            {errors.postal_code && (
+              <SelectError>{errors.postal_code}</SelectError>
+            )}
+
+            <SelectContainer>
+              <SelectLabel>É um endereço temporário?</SelectLabel>
+              <RadioContainer>
+                <RadioButton.Group
+                  onValueChange={value => {
+                    let parsedValue = value === 'true';
+                    setShowOriginAddress(parsedValue);
+                    setFieldValue('is_temporary_address', parsedValue);
                   }}
-                  >
-                    <Picker.Item
-                      label="Selecione o seu Estado"
-                      value=""
-                      color={'#b2b2b2'}
-                      key="0"
-                    />
-                    {states.map((state)=>(
-                      <Picker.Item label={state.nome} value={state.uf} key={state.uf} />
-                    ))}
-                  </Select>
-                </SelectContainer>
-                {errors.state && <SelectError>{errors.state}</SelectError>}
+                  value={`${values.is_temporary_address}`}>
+                  <RadioLabelContainer>
+                    <RadioButton value="true" />
+                    <RadioLabel>Sim</RadioLabel>
+                  </RadioLabelContainer>
 
+                  <RadioLabelContainer>
+                    <RadioButton value="false" />
+                    <RadioLabel>Não</RadioLabel>
+                  </RadioLabelContainer>
+                </RadioButton.Group>
+              </RadioContainer>
+            </SelectContainer>
+            {errors.is_temporary_address && (
+              <SelectError>{errors.is_temporary_address}</SelectError>
+            )}
+
+            {showOriginAddress && (
+              <>
                 <SelectContainer>
-                  <SelectLabel>Cidade</SelectLabel>
-                  <Select
-                    selectedValue={fieldCity}
-                    onValueChange={(value: any)=>{
-                      setFieldCity(value);
-                      setFieldValue('city_id', value);
-                  }}
-                  >
-                    <Picker.Item
-                      label="Selecione a sua Cidade"
-                      value=""
-                      color={'#b2b2b2'}
-                      key="0"
-                    />
-                    {cities.map((city)=>(
-                      <Picker.Item label={city.nome} value={city.id} key={city.id} />
-                    ))}
-                  </Select>
-                </SelectContainer>
-                {errors.city_id && <SelectError>{errors.city_id}</SelectError>}
-
-                <SelectContainer>
-                  <SelectLabel>CEP</SelectLabel>
-                  <TextInputMask
-                  type={'zip-code'}
-                  placeholder="Digite aqui o seu CEP completo"
-                  keyboardType="number-pad"
-                  returnKeyType="next"
-                  onBlur={handleBlur('postal_code')}
-                  value={values.postal_code}
-                  onChangeText={handleChange('postal_code')}
-                  style={{paddingVertical: 8}}
-                />
-                </SelectContainer>
-                {errors.postal_code && <SelectError>{errors.postal_code}</SelectError>}
-
-                <SelectContainer>
-                  <SelectLabel>É um endereço temporário?</SelectLabel>
-                  <RadioContainer>
-                    <RadioButton.Group
-                      onValueChange={value => {
-                        let parsedValue = (value === 'true');
-                        setShowOriginAddress(parsedValue);
-                        setFieldValue('is_temporary_address', parsedValue);
-                      }}
-                      value={`${values.is_temporary_address}`}
-                    >
-                      <RadioLabelContainer>
-                            <RadioButton value="true" />
-                        <RadioLabel>Sim</RadioLabel>
-                      </RadioLabelContainer>
-
-                      <RadioLabelContainer>
-                          <RadioButton value="false" />
-                      <RadioLabel>Não</RadioLabel>
-                    </RadioLabelContainer>
-
-                    </RadioButton.Group>
-                  </RadioContainer>
-                </SelectContainer>
-                {errors.is_temporary_address && <SelectError>{errors.is_temporary_address}</SelectError>}
-
-                {showOriginAddress && (
-                  <>
-                    <SelectContainer>
-                    <SelectLabel>Endereço de origem</SelectLabel>
-                    <Input
+                  <SelectLabel>Endereço de origem</SelectLabel>
+                  <Input
                     placeholder="Digite aqui o seu endereço de origem"
                     keyboardType="default"
                     autoCorrect={false}
@@ -335,54 +359,65 @@ const IsSyndicateApprovedFalse: React.FC<IProps> = ({handleLoading, handleWorker
                     value={values.origin_address}
                     onChangeText={handleChange('origin_address')}
                   />
-                  </SelectContainer>
-                  <SelectContainer>
-                    <SelectLabel>Estado de origem</SelectLabel>
-                    <Select
+                </SelectContainer>
+                <SelectContainer>
+                  <SelectLabel>Estado de origem</SelectLabel>
+                  <Select
                     selectedValue={fieldState}
-                    onValueChange={(value: any)=>{
+                    onValueChange={(value: any) => {
                       setFieldOriginState(value);
                       handleStateChange(value);
                       setFieldValue('origin_state', value);
-                  }}>
+                    }}>
+                    <Picker.Item
+                      label="Selecione o seu Estado de origem"
+                      value=""
+                      color={'#b2b2b2'}
+                      key="0"
+                    />
+                    {states.map(state => (
                       <Picker.Item
-                        label="Selecione o seu Estado de origem"
-                        value=""
-                        color={'#b2b2b2'}
-                        key="0"
+                        label={state.nome}
+                        value={state.uf}
+                        key={state.uf}
                       />
-                      {states.map((state)=>(
-                        <Picker.Item label={state.nome} value={state.uf} key={state.uf} />
-                      ))}
-                    </Select>
-                  </SelectContainer>
-                  {errors.origin_state && <SelectError>{errors.origin_state}</SelectError>}
+                    ))}
+                  </Select>
+                </SelectContainer>
+                {errors.origin_state && (
+                  <SelectError>{errors.origin_state}</SelectError>
+                )}
 
-                  <SelectContainer>
+                <SelectContainer>
                   <SelectLabel>Cidade de origem</SelectLabel>
                   <Select
                     selectedValue={fieldOriginCity}
-                    onValueChange={(value: any)=>{
+                    onValueChange={(value: any) => {
                       setFieldOriginCity(value);
                       setFieldValue('origin_city_id', value);
-                  }}
-                  >
+                    }}>
                     <Picker.Item
                       label="Selecione a sua Cidade de origem"
                       value=""
                       color={'#b2b2b2'}
                       key="0"
                     />
-                    {cities.map((city)=>(
-                      <Picker.Item label={city.nome} value={city.id} key={city.id} />
+                    {cities.map(city => (
+                      <Picker.Item
+                        label={city.nome}
+                        value={city.id}
+                        key={city.id}
+                      />
                     ))}
                   </Select>
                 </SelectContainer>
-                {errors.origin_city_id && <SelectError>{errors.origin_city_id}</SelectError>}
+                {errors.origin_city_id && (
+                  <SelectError>{errors.origin_city_id}</SelectError>
+                )}
 
-                  <SelectContainer>
-                    <SelectLabel>CEP de origem</SelectLabel>
-                    <TextInputMask
+                <SelectContainer>
+                  <SelectLabel>CEP de origem</SelectLabel>
+                  <TextInputMask
                     type={'zip-code'}
                     placeholder="Digite aqui o seu CEP completo"
                     keyboardType="number-pad"
@@ -391,78 +426,97 @@ const IsSyndicateApprovedFalse: React.FC<IProps> = ({handleLoading, handleWorker
                     value={values.origin_postal_code}
                     onChangeText={handleChange('origin_postal_code')}
                   />
-                  </SelectContainer>
-                  {errors.origin_postal_code && <SelectError>{errors.origin_postal_code}</SelectError>}
-                </>
-
+                </SelectContainer>
+                {errors.origin_postal_code && (
+                  <SelectError>{errors.origin_postal_code}</SelectError>
                 )}
-                <SelectContainer>
-                  <SelectLabel>Faixa salarial</SelectLabel>
-                  <Select
-                    selectedValue={fieldSalaryRange}
-                    onValueChange={(value: any)=>{
-                      setFieldSalaryRange(value);
-                      setFieldValue('salary_range', value);
-                  }}
-                  >
-                    <Picker.Item
-                      label="Selecione uma faixa salarial"
-                      value=""
-                      color={'#b2b2b2'}
-                      key="0"
-                    />
-                    <Picker.Item label="Menos de R$1.100,00" value="1" key="1" />
-                    <Picker.Item label="Até R$1.100,00" value="2" key="2" />
-                    <Picker.Item label="De R$1.101,00 a R$2.200,00" value="3" key="3" />
-                    <Picker.Item label="De R$2.201,00 a R$4.400,00" value="4" key="4" />
-                    <Picker.Item label="Maior que R$4.401,00" value="5" key="5" />
-                  </Select>
-                </SelectContainer>
-                {errors.salary_range && <SelectError>{errors.salary_range}</SelectError>}
-
-                <SelectContainer>
-                  <SelectLabel>Sindicato</SelectLabel>
-                  <Select
-                  selectedValue={fieldSyndicate}
-                  onValueChange={(value: any)=>{
-                    setFieldSyndicate(value);
-                    setFieldValue('syndicate_id', value);
-                }}
-                  >
-                    <Picker.Item
-                      label="Selecione um sindicato"
-                      value=""
-                      color={'#b2b2b2'}
-                      key="0"
-                    />
-                    {unions.map((syndicate)=>(
-                      <Picker.Item label={syndicate.nomeFantasia} value={syndicate.id} key={syndicate.id} />
-                    ))}
-                  </Select>
-                </SelectContainer>
-                {errors.syndicate_id && <SelectError>{errors.syndicate_id}</SelectError>}
-
-                <SwitchContainer>
-                  <View>
-                    <Switch
-                      value={isSwitchOn}
-                      onValueChange={(value)=>{
-                        onToggleSwitch(value);
-                        setFieldValue('is_discount_agreed', value);
-                      }}
-                    />
-                  </View>
-                  <SwitchLabel>{`Autorizo o desconto das mensalidades em folha de pagamento, nos termos da legislação em vigor, o valor de ${handleDiscountValue(values.syndicate_id)}, do meu vencimento em favor da entidade consignatária indicada.`}</SwitchLabel>
-                </SwitchContainer>
-                {errors.is_discount_agreed && <SelectError>{errors.is_discount_agreed}</SelectError>}
-
-                <NextStep onPress={()=>handleSubmit()}>
-                  <NextStepText>Solicitar sindicalização</NextStepText>
-                </NextStep>
-              </FormContainer>
+              </>
             )}
-          </Formik>
-        </>
+            <SelectContainer>
+              <SelectLabel>Faixa salarial</SelectLabel>
+              <Select
+                selectedValue={fieldSalaryRange}
+                onValueChange={(value: any) => {
+                  setFieldSalaryRange(value);
+                  setFieldValue('salary_range', value);
+                }}>
+                <Picker.Item
+                  label="Selecione uma faixa salarial"
+                  value=""
+                  color={'#b2b2b2'}
+                  key="0"
+                />
+                <Picker.Item label="Menos de R$1.100,00" value="1" key="1" />
+                <Picker.Item label="Até R$1.100,00" value="2" key="2" />
+                <Picker.Item
+                  label="De R$1.101,00 a R$2.200,00"
+                  value="3"
+                  key="3"
+                />
+                <Picker.Item
+                  label="De R$2.201,00 a R$4.400,00"
+                  value="4"
+                  key="4"
+                />
+                <Picker.Item label="Maior que R$4.401,00" value="5" key="5" />
+              </Select>
+            </SelectContainer>
+            {errors.salary_range && (
+              <SelectError>{errors.salary_range}</SelectError>
+            )}
+
+            <SelectContainer>
+              <SelectLabel>Sindicato</SelectLabel>
+              <Select
+                selectedValue={fieldSyndicate}
+                onValueChange={(value: any) => {
+                  setFieldSyndicate(value);
+                  setFieldValue('syndicate_id', value);
+                }}>
+                <Picker.Item
+                  label="Selecione um sindicato"
+                  value=""
+                  color={'#b2b2b2'}
+                  key="0"
+                />
+                {unions.map(syndicate => (
+                  <Picker.Item
+                    label={syndicate.nomeFantasia}
+                    value={syndicate.id}
+                    key={syndicate.id}
+                  />
+                ))}
+              </Select>
+            </SelectContainer>
+            {errors.syndicate_id && (
+              <SelectError>{errors.syndicate_id}</SelectError>
+            )}
+
+            <SwitchContainer>
+              <View>
+                <Switch
+                  value={isSwitchOn}
+                  onValueChange={value => {
+                    onToggleSwitch(value);
+                    setFieldValue('is_discount_agreed', value);
+                  }}
+                />
+              </View>
+              <SwitchLabel>{`Autorizo o desconto das mensalidades em folha de pagamento, nos termos da legislação em vigor, o valor de ${handleDiscountValue(
+                values.syndicate_id,
+              )}, do meu vencimento em favor da entidade consignatária indicada.`}</SwitchLabel>
+            </SwitchContainer>
+            {errors.is_discount_agreed && (
+              <SelectError>{errors.is_discount_agreed}</SelectError>
+            )}
+
+            <NextStep onPress={() => handleSubmit()}>
+              <NextStepText>Solicitar sindicalização</NextStepText>
+            </NextStep>
+          </FormContainer>
+        )}
+      </Formik>
+    </>
   );
 }
 

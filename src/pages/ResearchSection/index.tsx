@@ -52,11 +52,10 @@ const ResearchSection: React.FC = ()=>{
   return (
     <Container>
       <IntroContainer>
-        <IntroText>Pesquisas</IntroText>
+        <Title>Histórico de Pesquisas</Title>
       </IntroContainer>
 
       <Wrapper>
-        <Title>Histórico de Pesquisas</Title>
         {loading && <Loading />}
         {!loading &&
           researches &&
