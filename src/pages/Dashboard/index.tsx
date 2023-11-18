@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {Image} from 'react-native';
+import {Dimensions, Image, View} from 'react-native';
 import InnerPages from '../../components/InnerPages';
 import {useAuth} from '../../hooks/auth';
 import {useNavigation} from '@react-navigation/native';
@@ -32,16 +32,21 @@ import {
   ShortcutDetail,
   ShortcutDeatailIcon,
   ShortcutName,
+  SliderBox,
 } from './styles';
 import Icon from 'react-native-vector-icons/Feather';
 
 import api from '../../services/api';
 import {useSync} from '../../hooks/sync';
+import ImageCarousel from '../../components/ImageCarousel';
+
+
 
 const Dashboard: React.FC = () => {
   const {signOut, worker, updateWorker} = useAuth();
   const {syncData} = useSync();
   const navigation = useNavigation();
+  const screenWidth = Dimensions.get("window").width;
 
   const [fillProfile, setFillProfile] = useState(false);
 
@@ -83,22 +88,13 @@ const Dashboard: React.FC = () => {
           <UserTitle>
             <WelcomeUser>
               <WelcomeUserGreeting>Olá,</WelcomeUserGreeting>
-              <WelcomeUserName>
-                {worker.first_name + ' ' + worker.last_name}
-              </WelcomeUserName>
+              <WelcomeUserName>{worker.first_name}</WelcomeUserName>
             </WelcomeUser>
             <UserLogoutContainer onPress={() => handleSignOut()}>
               <UserLogoutText>Sair</UserLogoutText>
               <Icon name="log-out" size={24} color="#006633" />
             </UserLogoutContainer>
           </UserTitle>
-
-          <IntroTextContainer>
-            <IntroTextContent>
-              Relate problemas no seu trabalho, acompanhe notícias, acesse
-              convênios e sindicalize-se pelo Viva Voz.
-            </IntroTextContent>
-          </IntroTextContainer>
 
           <HomeShortcutsButtons>
             <ShortcutButton onPress={() => navigation.navigate('NewComplaint')}>
@@ -159,17 +155,9 @@ const Dashboard: React.FC = () => {
               <Icon name="chevron-right" size={24} color="#F38725" />
             </ShortcutButton>
           </HomeShortcutsButtons>
-
-          {fillProfile && (
-            <IntroTextContainer>
-              <IntroTextContent>
-                Entre em Cadastro e preencha os dados para acessar todos os
-                benefícios do aplicativo.
-              </IntroTextContent>
-            </IntroTextContainer>
-          )}
-
-          <FinancialSection />
+          <SliderBox>
+            <ImageCarousel />
+          </SliderBox>
         </Content>
       </Container>
     </InnerPages>

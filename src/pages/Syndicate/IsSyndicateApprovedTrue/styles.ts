@@ -1,3 +1,4 @@
+import { LinearGradient } from 'react-native-linear-gradient';
 import styled from 'styled-components/native';
 import { RectButton } from 'react-native-gesture-handler';
 
@@ -43,18 +44,26 @@ export const SyndicateName = styled.Text`
 export const AssociateContainer = styled.View`
   background: #006632;
   padding: 16px;
-  border-radius: 25px;
+  border-radius: 30px;
 `;
 
 export const AssociateId= styled.Text`
   color: white;
   font-family: 'AvenirNextLTPro-Bold';
-  font-size: 24px;
+  font-size: 30px;
 `;
 
 export const AssociateInfoBody = styled.View`
-  margin-top: 16px;
+  margin-top: 2px;
 `;
+
+export const Row = styled.View`
+   padding: 8px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 
 export const LogoCard = styled.View`
   display: flex;
@@ -78,6 +87,15 @@ export const AssociateInfoLabel = styled.Text`
   font-family: 'AvenirNextLTPro-Regular';
   margin: 8px 0;
 `;
+
+export const AssociateInfoSync = styled.Text`
+  color: white;
+  font-family: 'AvenirNextLTPro-Regular';
+  margin: 8px 0;
+  font-size: 18px;
+  font-weight: bold;
+`;
+
 
 export const AssociateInfo = styled.Text`
   color: white;

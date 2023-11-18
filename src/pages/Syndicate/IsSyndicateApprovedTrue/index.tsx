@@ -28,6 +28,8 @@ import {
   CardContent,
   LogoCard,
   SyndicateLogoCard,
+  AssociateInfoSync,
+  Row,
 } from './styles';
 
 interface IProps {
@@ -84,40 +86,51 @@ const IsSyndicateApprovedTrue: React.FC<IProps> = ({worker}) => {
               shadowRadius: 4,
               shadowOffset: {width: 0, height: 0},
             }}>
-            <AssociateContainer
-              >
-              <LogoCard>
-                <SyndicateLogoCard
-                  source={
-                    union.avatar ? {uri: union.avatar} : syndicatePlaceholder
-                  }
-                  resizeMethod="resize"
-                  resizeMode="cover"
-                />
-              </LogoCard>
-
-              <AssociateId>{worker.syndicate.nome_fantasia}</AssociateId>
+            <AssociateContainer>
+              <Row>
+                <AssociateInfoSync>
+                  {worker.syndicate.nome_fantasia}
+                </AssociateInfoSync>
+                <LogoCard>
+                  <SyndicateLogoCard
+                    source={
+                      union.avatar ? {uri: union.avatar} : syndicatePlaceholder
+                    }
+                    resizeMethod="resize"
+                    resizeMode="cover"
+                  />
+                </LogoCard>
+              </Row>
 
               <AssociateInfoBody>
-                <AssociateInfoContainer>
-                  <AssociateId>{worker.cpf}</AssociateId>
+                <Row>
+                  <AssociateInfoContainer>
+                    <AssociateInfoLabel>Identificação</AssociateInfoLabel>
+                    <AssociateId>{worker.cpf}</AssociateId>
+                  </AssociateInfoContainer>
+                  <LogoCard>
+                    <Icon name="rss" size={30} color="white" />
+                  </LogoCard>
+                </Row>
+              </AssociateInfoBody>
+
+              <Row>
+                <AssociateInfoBody>
+                  <AssociateInfoLabel>Nome</AssociateInfoLabel>
                   <AssociateInfo>
                     {worker.first_name + ' ' + worker.last_name}
                   </AssociateInfo>
-                </AssociateInfoContainer>
-              </AssociateInfoBody>
-
-              <AssociateInfoFooter>
-                <AssociateInfoContainer>
-                  <AssociateInfoLabel>Associado desde</AssociateInfoLabel>
+                </AssociateInfoBody>
+                <AssociateInfoBody>
+                  <AssociateInfoLabel>Cadastro</AssociateInfoLabel>
                   <AssociateInfo>
                     {format(
                       new Date(worker.syndicate_approved_at),
                       'dd/MM/yyyy',
                     )}
                   </AssociateInfo>
-                </AssociateInfoContainer>
-              </AssociateInfoFooter>
+                </AssociateInfoBody>
+              </Row>
             </AssociateContainer>
           </CardContent>
 

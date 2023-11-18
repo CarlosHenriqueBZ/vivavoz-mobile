@@ -17,7 +17,7 @@ export const UserTitle = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin: 48px 24px;
+  margin: 20px 24px;
 `;
 
 export const WelcomeUser = styled.View`
@@ -65,6 +65,11 @@ export const IntroTextContent = styled.Text`
 `;
 
 export const HomeShortcutsButtons = styled.View`
+  margin: 16px;
+`;
+
+export const SliderBox = styled.View`
+  margin-top: 10px;
   margin: 16px;
 `;
 
