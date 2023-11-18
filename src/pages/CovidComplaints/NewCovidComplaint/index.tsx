@@ -181,6 +181,10 @@ const NewCovidComplaint: React.FC = () => {
     setUnions(loadedUnions);
   }, []);
 
+  const sortedCompanies = companies.slice().sort((a, b) => {
+    return a._raw?.nome_fantasia.localeCompare(b._raw?.nome_fantasia);
+  });
+
   const handleSelectedCompany = useCallback(async id => {
     setSelectedCompany(id);
     const loadedCities = await companiesRepository.getCities(id);
@@ -344,7 +348,7 @@ const NewCovidComplaint: React.FC = () => {
                         color={'#b2b2b2'}
                         key="0"
                       />
-                      {companies.map(({_raw: company}: {_raw: any}) => {
+                      {sortedCompanies.map(({_raw: company}: {_raw: any}) => {
                         return (
                           <Picker.Item
                             label={company.nome_fantasia}

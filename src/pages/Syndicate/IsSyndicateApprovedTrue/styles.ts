@@ -6,6 +6,11 @@ export const PageContent = styled.View`
   padding: 24px 16px;
 `;
 
+export const CardContent = styled.View`
+  flex: 1;
+  padding: 8px;
+`;
+
 export const SyndicateContainer = styled.View`
   background: white;
   elevation: 5;
@@ -19,9 +24,13 @@ export const SyndicateLogo = styled.Image`
   width: 72px;
   height: 72px;
   border-radius: 50px;
-  background: white;
 `;
 
+export const SyndicateLogoCard = styled.Image`
+  width: 30px;
+  height: 30px;
+  border-radius: 50px;
+`;
 export const SyndicateName = styled.Text`
   color: #006633;
   font-size: 16px;
@@ -32,8 +41,9 @@ export const SyndicateName = styled.Text`
 `;
 
 export const AssociateContainer = styled.View`
-  background: #B9D942;
-  padding: 24px;
+  background: #006632;
+  padding: 16px;
+  border-radius: 25px;
 `;
 
 export const AssociateId= styled.Text`
@@ -43,11 +53,19 @@ export const AssociateId= styled.Text`
 `;
 
 export const AssociateInfoBody = styled.View`
-  margin-top: 32px;
+  margin-top: 16px;
+`;
+
+export const LogoCard = styled.View`
+  display: flex;
+align-self: flex-end;
+
+  flex-direction: row;
+  align-items: center;
 `;
 
 export const AssociateInfoFooter = styled.View`
-  margin: 32px 0;
+  margin: 16px 0;
   flex-direction: row;
 `;
 

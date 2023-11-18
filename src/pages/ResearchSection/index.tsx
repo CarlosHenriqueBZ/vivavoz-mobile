@@ -51,10 +51,6 @@ const ResearchSection: React.FC = ()=>{
 
   return (
     <Container>
-      <IntroContainer>
-        <Title>Histórico de Pesquisas</Title>
-      </IntroContainer>
-
       <Wrapper>
         {loading && <Loading />}
         {!loading &&
@@ -69,7 +65,9 @@ const ResearchSection: React.FC = ()=>{
                 <ShortcutDeatailIcon>
                   <Icon name="message-circle" size={24} color="#F38725" />
                 </ShortcutDeatailIcon>
-                <ShortcutName>{research.title}</ShortcutName>
+                <ShortcutDetail>
+                  <ShortcutName>{research.title}</ShortcutName>
+                </ShortcutDetail>
               </ShortcutDetail>
               <Icon name="chevron-right" size={24} color="#F38725" />
             </ShortcutButton>

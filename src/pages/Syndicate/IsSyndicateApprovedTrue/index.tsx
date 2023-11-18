@@ -25,6 +25,9 @@ import {
   ShortcutDetail,
   ShortcutDeatailIcon,
   ShortcutName,
+  CardContent,
+  LogoCard,
+  SyndicateLogoCard,
 } from './styles';
 
 interface IProps {
@@ -74,28 +77,49 @@ const IsSyndicateApprovedTrue: React.FC<IProps> = ({worker}) => {
               <SyndicateName>{worker.syndicate.nome_fantasia}</SyndicateName>
             </SyndicateContainer>
           </PageContent>
+          <CardContent
+            style={{
+              shadowColor: '#000000',
+              shadowOpacity: 0.15,
+              shadowRadius: 4,
+              shadowOffset: {width: 0, height: 0},
+            }}>
+            <AssociateContainer
+              >
+              <LogoCard>
+                <SyndicateLogoCard
+                  source={
+                    union.avatar ? {uri: union.avatar} : syndicatePlaceholder
+                  }
+                  resizeMethod="resize"
+                  resizeMode="cover"
+                />
+              </LogoCard>
 
-          <AssociateContainer>
-            <AssociateId>{worker.cpf}</AssociateId>
+              <AssociateId>{worker.syndicate.nome_fantasia}</AssociateId>
 
-            <AssociateInfoBody>
-              <AssociateInfoContainer>
-                <AssociateInfoLabel>Nome do associado</AssociateInfoLabel>
-                <AssociateInfo>
-                  {worker.first_name + ' ' + worker.last_name}
-                </AssociateInfo>
-              </AssociateInfoContainer>
-            </AssociateInfoBody>
+              <AssociateInfoBody>
+                <AssociateInfoContainer>
+                  <AssociateId>{worker.cpf}</AssociateId>
+                  <AssociateInfo>
+                    {worker.first_name + ' ' + worker.last_name}
+                  </AssociateInfo>
+                </AssociateInfoContainer>
+              </AssociateInfoBody>
 
-            <AssociateInfoFooter>
-              <AssociateInfoContainer>
-                <AssociateInfoLabel>Associado desde</AssociateInfoLabel>
-                <AssociateInfo>
-                  {format(new Date(worker.syndicate_approved_at), 'dd/MM/yyyy')}
-                </AssociateInfo>
-              </AssociateInfoContainer>
-            </AssociateInfoFooter>
-          </AssociateContainer>
+              <AssociateInfoFooter>
+                <AssociateInfoContainer>
+                  <AssociateInfoLabel>Associado desde</AssociateInfoLabel>
+                  <AssociateInfo>
+                    {format(
+                      new Date(worker.syndicate_approved_at),
+                      'dd/MM/yyyy',
+                    )}
+                  </AssociateInfo>
+                </AssociateInfoContainer>
+              </AssociateInfoFooter>
+            </AssociateContainer>
+          </CardContent>
 
           <HomeShortcutsButtons>
             <ShortcutButton
@@ -158,7 +182,6 @@ const IsSyndicateApprovedTrue: React.FC<IProps> = ({worker}) => {
               </ShortcutDetail>
               <Icon name="chevron-right" size={24} color="#F38725" />
             </ShortcutButton>
-
           </HomeShortcutsButtons>
         </>
       )}

@@ -3,9 +3,8 @@ import { RectButton } from 'react-native-gesture-handler';
 
 export const Container = styled.View`
   margin: 24px 16px;
-  margin-top: 50px;
+  margin-top: 10px;
     flex: 1;
-  background: #006633;
 `;
 
 export const IntroContainer= styled.View`

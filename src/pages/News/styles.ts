@@ -16,7 +16,7 @@ export const FeatureContainer = styled.TouchableOpacity`
 
 export const FeatureImage = styled.Image`
   background: #cccccc;
-  border-radius: 10px;
+  border-radius: 25px;
   width: 100%;
   height: 172px;
   margin-bottom: 16px;
@@ -38,6 +38,7 @@ export const FeatureInfoContainer = styled.View`
 export const FeatureInfo = styled.Text`
   font-family: 'AvenirNextLTPro-Regular';
   color: #666666;
+  font-weight: bold;
 `;
 
 export const NoPosts = styled.Text`
