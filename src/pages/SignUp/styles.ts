@@ -73,6 +73,17 @@ export const RadioButtonContainer = styled.View<RadioButtonContainerProps>`
   align-items: center;
 `
 
+export const ContentContainer = styled.ScrollView`
+  flex: 1;
+  border: solid 2px white;
+`;
+
+export const BoxTerms = styled.View`,
+  background: #f2f2f2;
+  flex: 1;
+  min-height: 900px;
+`;
+
 export const NextStep = styled(RectButton)`
   margin-top: 32px;
   padding: 16px;
@@ -119,6 +130,12 @@ export const SwitchContainer = styled.View`
   border-style: solid;
   margin-top: 24px;
   padding-bottom: 24px;
+`;
+
+export const RowTerms = styled.View`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `;
 
 export const SwitchLabel = styled.Text`

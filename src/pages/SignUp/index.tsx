@@ -1,5 +1,5 @@
 import React, {useState, useCallback} from 'react';
-import {KeyboardAvoidingView, Platform, Linking, Alert} from 'react-native';
+import {KeyboardAvoidingView, Platform, Linking, Alert, Modal, TouchableOpacity, Text, StyleSheet} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import {Formik} from 'formik';
 import {RadioButton, Switch} from 'react-native-paper';
@@ -31,13 +31,33 @@ import {
   SwitchLabel,
   NextStep,
   NextStepText,
+  ContentContainer,
+  BoxTerms,
+  NextStepTerms,
+  RowTerms,
 } from './styles';
+import ModalTerms from '../../components/ModalTerms';
+import Icon from 'react-native-vector-icons/Feather';
 
 const SignUp: React.FC = () => {
   const [activityProfile, setActivityProfile] = useState();
   const [genre, setGenre] = useState();
 
   const navigation = useNavigation();
+   const [modalVisible, setModalVisible] = useState(false);
+
+   const openModal = () => {
+     setModalVisible(true);
+   };
+
+   const closeModal = () => {
+     setModalVisible(false);
+   };
+
+   const acceptTermsModal = () => {
+     setModalVisible(false);
+      setIsSwitchOn(true);
+   };
 
   const [isPeasant, setIsPeasant] = useState<string | boolean>();
   const [isOutsourced, setIsOutsourced] = useState<string | boolean>();
@@ -339,16 +359,22 @@ const handleCreateAccount = useCallback(async values => {
                         value={isSwitchOn}
                         onValueChange={value => {
                           onToggleSwitch(value);
-                          setFieldValue('is_lgpd_agreed', value);
+                          setFieldValue('is_lgpd_agreed', isSwitchOn);
                         }}
                       />
                     </View>
-                    <SwitchLabel
-                      onPress={() =>
-                        Linking.openURL('https://www.tse.jus.br/transparencia-e-prestacao-de-contas/politica-de-privacidade-e-termos-de-uso?SearchableText=pol%C3%ADtica%20de%20privacidade')
-                      }>
-                      Aceito os termos de uso.
-                    </SwitchLabel>
+
+                    <RowTerms>
+                      <SwitchLabel onPress={openModal}>
+                        Aceito os termos de uso.
+                      </SwitchLabel>
+                      <Icon
+                        onPress={openModal}
+                        color={'#006633'}
+                        name="help-circle"
+                        size={24}
+                      />
+                    </RowTerms>
                   </SwitchContainer>
                   {errors.is_lgpd_agreed && (
                     <SelectError>{errors.is_lgpd_agreed}</SelectError>
@@ -363,8 +389,113 @@ const handleCreateAccount = useCallback(async values => {
           </Main>
         </BasePage>
       </KeyboardAvoidingView>
+      <Modal
+        transparent={true}
+        animationType="slide"
+        visible={modalVisible}
+        onRequestClose={closeModal}>
+        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          <View
+            style={{backgroundColor: 'white', padding: 20, borderRadius: 10}}>
+            <ContentContainer>
+              <BoxTerms>
+                <View style={styles.container}>
+                  <Text style={styles.paragraphBolder}>
+                    Bem-vindo ao nosso Aplicativo de Acessibilidade para
+                    Sindicatos e Trabalhadores Rurais!
+                  </Text>
+                  <Text style={styles.paragraph}>
+                    Nosso compromisso é tornar o ambiente de trabalho no setor
+                    rural mais seguro, justo e transparente. Combinamos a força
+                    dos sindicatos com a voz dos trabalhadores para criar um
+                    espaço onde todos possam prosperar.
+                  </Text>
+                  <Text style={styles.paragraph}>
+                    Aqui estão algumas das principais características do nosso
+                    aplicativo:
+                  </Text>
+                  <Text style={styles.listItem}>
+                    1. Denúncias Anônimas com Segurança
+                  </Text>
+                  <Text style={styles.listItem}>
+                    2. Visão Gerencial para Sindicatos
+                  </Text>
+                  <Text style={styles.listItem}>
+                    3. Colaboração para um Ambiente Melhor
+                  </Text>
+                  <Text style={styles.listItem}>
+                    4. Transparência e Prestação de Contas
+                  </Text>
+                  <Text style={styles.listItem}>5. Facilidade de Uso</Text>
+                  <Text style={styles.paragraph}>
+                    Estamos comprometidos em construir um ambiente de trabalho
+                    mais seguro e justo para todos os envolvidos. Junte-se a nós
+                    nesta jornada em direção a um futuro melhor para os
+                    trabalhadores rurais e seus sindicatos.
+                  </Text>
+                  <Text style={styles.paragraph}>
+                    Faça o download do nosso aplicativo agora e seja parte da
+                    mudança!
+                  </Text>
+                </View>
+              </BoxTerms>
+            </ContentContainer>
+            <TouchableOpacity
+              style={styles.nextStep}
+              onPress={acceptTermsModal}>
+              <Text style={styles.nextStepText}>Aceito os Termos de Uso</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.nextStepBack} onPress={closeModal}>
+              <Text style={styles.nextStepText}>Voltar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </Container>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 16,
+  },
+  nextStep: {
+    marginTop: 7,
+    padding: 16,
+    textAlign: 'center',
+    backgroundColor: '#f38725',
+    borderRadius: 16,
+  },
+  nextStepBack: {
+    marginTop: 8,
+    padding: 16,
+    textAlign: 'center',
+    backgroundColor: 'red',
+    borderRadius: 16,
+    marginBottom: 6,
+  },
+  nextStepText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  paragraph: {
+    marginBottom: 10,
+    fontSize: 16,
+    lineHeight: 24,
+  },
+  paragraphBolder: {
+    marginBottom: 10,
+    fontSize: 16,
+    lineHeight: 24,
+    fontWeight: 'bold'
+  },
+  listItem: {
+    marginLeft: 20,
+    fontSize: 16,
+    lineHeight: 24,
+  },
+});
 
 export default SignUp;

@@ -97,6 +97,9 @@ const Dashboard: React.FC = () => {
           </UserTitle>
 
           <HomeShortcutsButtons>
+           {/*  <SliderBox>
+              <ImageCarousel />
+            </SliderBox> */}
             <ShortcutButton onPress={() => navigation.navigate('NewComplaint')}>
               <ShortcutDetail>
                 <ShortcutDeatailIcon>
@@ -155,9 +158,6 @@ const Dashboard: React.FC = () => {
               <Icon name="chevron-right" size={24} color="#F38725" />
             </ShortcutButton>
           </HomeShortcutsButtons>
-          <SliderBox>
-            <ImageCarousel />
-          </SliderBox>
         </Content>
       </Container>
     </InnerPages>

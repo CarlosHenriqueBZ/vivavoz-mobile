@@ -42,7 +42,7 @@ export const SyndicateName = styled.Text`
 `;
 
 export const AssociateContainer = styled.View`
-  background: #006632;
+  background: #455298
   padding: 16px;
   border-radius: 30px;
 `;

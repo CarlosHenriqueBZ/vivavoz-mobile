@@ -3,6 +3,7 @@ import {
   View,
   StyleSheet,
   Image,
+  Text,
 } from 'react-native';
 import Swiper from 'react-native-swiper';
 
@@ -16,7 +17,7 @@ const ImageCarousel = () => {
     'https://media.istockphoto.com/id/1159228611/pt/vetorial/vector-realistic-isolated-black-hole-in-space-background-for-template-decoration-and.jpg?s=2048x2048&w=is&k=20&c=W-iC2gE5-vIIFmc9GOXfEzH_cRp3XplhDY4vxqpMahA=',
   ];
 
-  const handleIndexChanged = index=> {
+  const handleIndexChanged = index => {
     setCurrentIndex(index);
   };
 
@@ -25,19 +26,18 @@ const ImageCarousel = () => {
       <Swiper
         style={styles.wrapper}
         showsButtons={false}
+        showsPagination={false}
+        autoplayTimeout={5}
         autoplay={true}
-        autoplayTimeout={12}
-        onIndexChanged={handleIndexChanged}
-        paginationStyle={styles.pagination}
-        dotStyle={styles.dot}
-        activeDotStyle={styles.activeDot}>
+        loop={true}
+      >
         {images.map((image, index) => (
           <View key={index} style={styles.slide}>
             <Image source={{uri: image}} style={styles.image} />
           </View>
         ))}
       </Swiper>
-     
+      
     </View>
   );
 };
@@ -46,7 +46,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     height: 160,
-    marginVertical: 5,
   },
   wrapper: {},
   slide: {
@@ -55,7 +54,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   image: {
-    width: '90%',
+    width: '95%',
     height: 130,
     borderRadius: 20,
   },

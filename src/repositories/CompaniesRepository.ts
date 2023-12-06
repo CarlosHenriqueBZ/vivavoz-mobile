@@ -24,6 +24,7 @@ export default class CompaniesRepository implements ICompaniesInterface {
           company.nomeFantasia = data.nome_fantasia;
           company.createdAt = data.created_at;
           company.updatedAt = data.updated_at;
+          company.state = data.state;
         });
 
       return newCompany;

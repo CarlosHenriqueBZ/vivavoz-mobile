@@ -9,11 +9,15 @@ import { Text } from 'react-native';
 import api from '../../../services/api';
 
 import {
+  ComboMessage,
   Container,
   PageContent,
   PartnerCategory,
+  PartnersBlank,
   PartnersList,
+  Title,
 } from './styles';
+import Icon from 'react-native-vector-icons/Feather';
 
 type StackParamsList = {
   A: undefined;
@@ -74,20 +78,32 @@ const ListPartners: React.FC = ()=>{
   return (
     <InnerPages name="Convênios">
       {loading && <AppLoadingState />}
-      {!loading && (
+      {!loading && partners.length ? (
         <Container>
           <PartnersList
-            ListHeaderComponent={()=>(
+            ListHeaderComponent={() => (
               <PageContent>
-                <PartnerCategory>
-                  Convênios: {categoryName}
-                </PartnerCategory>
+                <PartnerCategory>Convênios: {categoryName}</PartnerCategory>
               </PageContent>
             )}
             data={partners}
-            keyExtractor={(partner: any)=>partner.id}
-            renderItem={({item}: any) => <PartnerItem partner={item}/>}
+            keyExtractor={(partner: any) => partner.id}
+            renderItem={({item}: any) => <PartnerItem partner={item} />}
           />
+        </Container>
+      ) : (
+        <Container>
+          <PartnersBlank>
+            <ComboMessage>
+              <Icon
+                name="info"
+                size={35}
+                color="#006633"
+                style={{marginTop: 10}}
+              />
+              <Title>Nenhum Convênio de {categoryName} Cadastrado</Title>
+            </ComboMessage>
+          </PartnersBlank>
         </Container>
       )}
     </InnerPages>

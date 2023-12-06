@@ -13,18 +13,25 @@ import {
 const UnionizationConfirmation: React.FC = ()=>{
   const navigation = useNavigation();
 
+  const handleVoltar = () => {
+    navigation.goBack();
+  };
+
   return (
     <InnerPages name="Sindicato">
       <Container>
         <Content>
-          <Text>Sua solicitação foi enviada com sucesso. Em breve você deverá ter um retorno do seu sindicato.</Text>
-          <NextStep onPress={()=>navigation.navigate('Dashboard')}>
+          <Text>
+            Sua solicitação foi enviada com sucesso. Em breve você deverá ter um
+            retorno do seu sindicato.
+          </Text>
+          <NextStep onPress={() => handleVoltar}>
             <NextStepText>Voltar para o início</NextStepText>
           </NextStep>
         </Content>
       </Container>
     </InnerPages>
-  )
+  );
 }
 
 export default UnionizationConfirmation;

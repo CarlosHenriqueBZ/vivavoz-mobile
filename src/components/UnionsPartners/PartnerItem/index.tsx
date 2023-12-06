@@ -55,7 +55,13 @@ interface IProps {
 
 const PartnerItem: React.FC<IProps> = ({partner})=>{
   return (
-    <Container style={{shadowColor: '#000000', shadowOpacity: 0.15, shadowRadius: 4, shadowOffset: {width: 0, height: 0}}}>
+    <Container
+      style={{
+        shadowColor: '#000000',
+        shadowOpacity: 0.15,
+        shadowRadius: 4,
+        shadowOffset: {width: 0, height: 0},
+      }}>
       <Body>
         <PartnerInfo>
           <PartnerLogoContainer>
@@ -71,26 +77,35 @@ const PartnerItem: React.FC<IProps> = ({partner})=>{
             <PartnerAddress>{`${partner.city.nome}/${partner.city.uf} - CEP: ${partner.postal_code}`}</PartnerAddress>
           </PartnerInfoContainer>
         </PartnerInfo>
-        <PartnerDescription>{partner.description || 'Nenhuma descrição foi informada.'}</PartnerDescription>
+        <PartnerDescription>
+          {partner.description || 'Nenhuma descrição foi informada.'}
+        </PartnerDescription>
       </Body>
       <Footer>
         {!!partner.whatsapp && (
-        <FooterButton onPress={()=>Linking.openURL(`whatsapp://send?text=ola&phone=+55${partner.whatsapp}`)}>
-          <Icon name="whatsapp" color="#006633" size={24}/>
-          <FooterButtonText>Whatsapp</FooterButtonText>
-        </FooterButton>
+          <FooterButton
+            onPress={() =>
+              Linking.openURL(
+                `whatsapp://send?text=ola&phone=+55${partner.whatsapp}`,
+              )
+            }>
+            <Icon name="whatsapp" color="#006633" size={24} />
+            <FooterButtonText>Whatsapp</FooterButtonText>
+          </FooterButton>
         )}
         {!!partner.phone && (
-        <FooterButton onPress={()=>Linking.openURL(`tel:+55${partner.phone}`)}>
-          <Icon name="phone" color="#006633" size={24}/>
-          <FooterButtonText>Telefone</FooterButtonText>
-        </FooterButton>
+          <FooterButton
+            onPress={() => Linking.openURL(`tel:+55${partner.phone}`)}>
+            <Icon name="phone" color="#006633" size={24} />
+            <FooterButtonText>Telefone</FooterButtonText>
+          </FooterButton>
         )}
         {!!partner.email && (
-        <FooterButton onPress={()=>Linking.openURL(`mailto:${partner.email}`)}>
-          <Icon name="email-outline" color="#006633" size={24}/>
-          <FooterButtonText>E-mail</FooterButtonText>
-        </FooterButton>
+          <FooterButton
+            onPress={() => Linking.openURL(`mailto:${partner.email}`)}>
+            <Icon name="email-outline" color="#006633" size={24} />
+            <FooterButtonText>E-mail</FooterButtonText>
+          </FooterButton>
         )}
       </Footer>
     </Container>
