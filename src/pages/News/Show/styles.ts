@@ -30,6 +30,7 @@ export const MediaContainer = styled.View`
 
 export const ImageContent = styled.Image`
   flex: 1;
+  border-radius: 25px;
 `;
 
 export const Credits = styled.Text`

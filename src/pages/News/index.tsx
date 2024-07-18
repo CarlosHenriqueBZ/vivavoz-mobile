@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {FlatList} from 'react-native';
+import {FlatList, View} from 'react-native';
 import InnerPages from '../../components/InnerPages';
 import {useNavigation} from '@react-navigation/native';
 
@@ -16,12 +16,20 @@ import {
   FeatureInfoContainer,
   FeatureInfo,
   NoPosts,
+  FeatureText,
+  TutorialImage,
+  TutorialButton,
+  TutorialButtonText,
+  TutorialButtonContainer,
+  TutorialDescription,
+  TutorialTextContainer,
+  TutorialTitle,
 } from './styles';
 import format from 'date-fns/format';
 import {Text} from 'react-native-paper';
-import { useAuth } from '../../hooks/auth';
-import { NextStep, NextStepText } from '../Research/styles';
-import { IntroTextContainer, IntroTextContent } from './Show/styles';
+import {useAuth} from '../../hooks/auth';
+import {NextStep, NextStepText} from '../Research/styles';
+import {IntroTextContainer, IntroTextContent} from './Show/styles';
 
 interface ICategory {
   id: string;
@@ -48,12 +56,10 @@ interface IPost {
 
 const News: React.FC = () => {
   const navigation = useNavigation();
-    const {worker, updateWorker} = useAuth();
+  const {worker, updateWorker} = useAuth();
 
   const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState<IPost[]>();
-
-
 
   useEffect(() => {
     const loadData = async () => {
@@ -75,80 +81,36 @@ const News: React.FC = () => {
         <Container>
           {worker.is_syndicate_approved === null ? (
             <Container>
-              <FeatureContainer
-                onPress={() =>
-                  navigation.navigate('ShowNews', {id: posts[0]?.id})
-                }>
-                <>
-                  {posts[1]?.featured_image !== null && (
-                    <FeatureImage source={{uri: posts[1]?.featured_image}} />
-                  )}
-                  <FeatureTitle>{posts[1]?.title}</FeatureTitle>
-                  <FeatureInfoContainer>
-                    <FeatureInfo>
-                      {posts[1]?.categories
-                        .map(category => category.title)
-                        .join(', ')}
-                    </FeatureInfo>
-                    <FeatureInfo>
-                      {posts[1]
-                        ? format(
-                            new Date(posts[1]?.publishedAt),
-                            "dd/MM/yyyy 'às' HH:mm",
-                          )
-                        : format(new Date(), "dd/MM/yyyy 'às' HH:mm")}
-                    </FeatureInfo>
-                  </FeatureInfoContainer>
-                </>
-              </FeatureContainer>
-              <IntroTextContainer>
-                <IntroTextContent>
-                  Desbloqueie um universo de informações exclusivas!
-                  Sindicalize-se agora para ter acesso a todas as notícias.
-                </IntroTextContent>
-              </IntroTextContainer>
-              <FeatureContainer>
-                <NextStep onPress={() => navigation.navigate('Sindicato')}>
-                  <NextStepText>Solicitar sindicalização</NextStepText>
-                </NextStep>
-              </FeatureContainer>
+              <TutorialTextContainer>
+                <TutorialTitle>Fique por dentro</TutorialTitle>
+                <TutorialDescription numberOfLines={7}>
+                  todas as novidades, atualizações e informações na palma da
+                  mão. Solicitar sindicalização agora para receber as melhores
+                  notícias diretamente em seu dispositivo.
+                </TutorialDescription>
+              </TutorialTextContainer>
+              <TutorialImage
+                source={require('./cover.png')}
+                resizeMode="cover"
+              />
+              <TutorialButtonContainer>
+                <TutorialButton onPress={() => console.log('click')}>
+                  <NextStep onPress={() => navigation.navigate('Sindicato')}>
+                    <NextStepText>Solicitar sindicalização</NextStepText>
+                  </NextStep>
+                </TutorialButton>
+              </TutorialButtonContainer>
             </Container>
           ) : (
-            <FlatList
-              ListHeaderComponent={
-                <FeatureContainer
-                  onPress={() =>
-                    navigation.navigate('ShowNews', {id: posts[0]?.id})
-                  }>
-                  <>
-                    {posts[0]?.featured_image !== null && (
-                      <FeatureImage source={{uri: posts[0]?.featured_image}} />
-                    )}
-                    <FeatureTitle>{posts[0]?.title}</FeatureTitle>
-                    <FeatureInfoContainer>
-                      <FeatureInfo>
-                        {posts[0]?.categories
-                          .map(category => category.title)
-                          .join(', ')}
-                      </FeatureInfo>
-                      <FeatureInfo>
-                        {posts[0]
-                          ? format(
-                              new Date(posts[0]?.publishedAt),
-                              "dd/MM/yyyy 'às' HH:mm",
-                            )
-                          : format(new Date(), "dd/MM/yyyy 'às' HH:mm")}
-                      </FeatureInfo>
-                    </FeatureInfoContainer>
-                  </>
-                </FeatureContainer>
-              }
-              data={posts}
-              keyExtractor={post => post.id}
-              renderItem={({item, index}) => (
-                <PostItemList post={item} index={index} />
-              )}
-            />
+            <FeatureContainer>
+              <FlatList
+                data={posts}
+                keyExtractor={post => post.id}
+                renderItem={({item, index}) => (
+                  <PostItemList post={item} index={index} />
+                )}
+              />
+            </FeatureContainer>
           )}
         </Container>
       ) : (

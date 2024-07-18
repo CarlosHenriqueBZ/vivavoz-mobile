@@ -1,93 +1,77 @@
-import React, {useState, useCallback, useEffect} from 'react';
-import TrackPlayer, {
-  AppKilledPlaybackBehavior,
-} from 'react-native-track-player';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import {Alert} from 'react-native';
-import NetInfo from '@react-native-community/netinfo';
+import React, {useState, useEffect} from 'react';
 
 import {Container, Button, ListenText} from './styles';
-import api from '../../../../services/api';
+
+import {View, Text, TouchableOpacity} from 'react-native';
+import Sound from 'react-native-sound';
+import Icon from 'react-native-vector-icons/Feather';
+
 
 interface IProps {
   postId: string;
   postTitle: string;
+  urlAudio: string;
 }
 
-export const ListenNews: React.FC<IProps> = ({postId, postTitle}) => {
-  const [playing, setPlaying] = useState(false);
-
-  TrackPlayer.getState().then(state => console.log('ESTADO', state));
-  console.log('PLAYING STATE', playing);
-
-  const handleListen = useCallback(async (value: boolean) => {
-    await TrackPlayer.updateOptions({
-      android: {
-        appKilledPlaybackBehavior: AppKilledPlaybackBehavior.ContinuePlayback,
-      },
-    });
-
-    console.log('HANDLE LISTEN VALUE', value);
-
-    if (value) {
-      const netInfo = await NetInfo.fetch();
-
-      if (netInfo.isConnected !== true) {
-        Alert.alert(
-          'É necessário estar conectado à internet para usar este recurso.',
-        );
-        return;
-      }
-
-      Alert.alert('A notícia está sendo carregada. Espere um momento.');
-
-      setPlaying(value);
-
-      try {
-        const trackURI = await api.post(`/news/listen/${postId}`);
-
-        await TrackPlayer.add({
-          id: `vivavoz-${postId}`,
-          url: trackURI.data,
-          title: postTitle,
-          artist: 'Viva Voz',
-        });
-
-        await TrackPlayer.play();
-      } catch (error) {
-        console.error(error);
-      }
-    } else {
-      setPlaying(false);
-      await TrackPlayer.reset();
-    }
-  }, []);
-
-  const setupPlayer = useCallback(
-    async () => await TrackPlayer.setupPlayer({waitForBuffer: true}),
-    [],
-  );
-  const clearEffect = useCallback(async () => await TrackPlayer.reset(), []);
+export const ListenNews: React.FC<IProps> = ({urlAudio}) => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [sound, setSound] = useState(null);
 
   useEffect(() => {
-    setupPlayer();
+    sound?.setCategory('Playback');
+
+    const audio = new Sound(urlAudio, sound?.MAIN_BUNDLE, (error) => {
+      if (error) {
+        console.log('Erro ao carregar o áudio:', error);
+        return;
+      }
+      setSound(audio);
+    });
+
     return () => {
-      clearEffect();
+      if (sound) {
+        sound?.stop();
+        sound?.release();
+      }
     };
   }, []);
 
+
+  useEffect(() => {
+    sound?.stop();
+  } , [])
+    
+
+  const toggleSound = () => {
+    if (sound) {
+      if (isPlaying) {
+        sound?.pause();
+      } else {
+        sound?.play((success) => {
+          if (success) {
+            console.log('Áudio reproduzido com sucesso');
+          } else {
+            console.log('Erro na reprodução do áudio');
+          }
+        });
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
   return (
     <Container>
-      {playing && (
-        <Button onPress={() => handleListen(false)}>
-          <Icon name="pause-circle" color="#006633" size={48} />
-        </Button>
-      )}
-      {!playing && (
-        <Button onPress={() => handleListen(true)}>
-          <Icon name="play-circle" color="#006633" size={48} />
-        </Button>
-      )}
+      <View>
+        {isPlaying ? (
+          <Button onPress={toggleSound}>
+            <Icon name="pause-circle" color="#006633" size={48} />
+          </Button>
+        ) : (
+          <Button onPress={toggleSound}>
+            <Icon name="play-circle" color="#006633" size={48} />
+          </Button>
+        )}
+      </View>
       <ListenText>Ouvir essa notícia</ListenText>
     </Container>
   );

@@ -1,4 +1,4 @@
-import React, {useCallback, useState, useMemo, useRef} from 'react';
+import React, {useCallback, useState, useMemo, useRef, useEffect} from 'react';
 import {Text, View, TouchableWithoutFeedback, Platform} from 'react-native';
 import {format} from 'date-fns';
 import Icon from 'react-native-vector-icons/Feather';
@@ -22,6 +22,7 @@ import {
   MessageDocumentContainer,
   MessageDocumentTitle,
 } from './styles';
+import Sound from 'react-native-sound';
 
 interface IMessageProps {
   message: any;
@@ -32,7 +33,46 @@ const ComplaintMessage: React.FC<IMessageProps> = ({message}) => {
 
   const [playAudio, setPlayAudio] = useState(false);
   const [playTime, setPlayTime] = useState('');
+  const [progress, setProgress] = useState(0);
   const [currentPositionSec, setCurrentPositionSec] = useState(0);
+  const [sliderValue, setSliderValue] = useState(0);
+
+  useEffect(() => {
+    Sound.setCategory('Playback'); // Habilitar reprodução em modo de silêncio
+  }, []);
+
+  const playAudioNew = (audioPath, audioDuration) => {
+    setPlayAudio(!playAudio);
+    const audio = new Sound(audioPath, Sound.MAIN_BUNDLE, error => {
+      if (error) {
+        console.log('Erro ao carregar o áudio:', error);
+        return;
+      }
+
+      audio.setPitch(2);
+      audio.play(success => {
+        if (success) {
+          console.log('Áudio reproduzido com sucesso');
+        } else {
+          console.log('Erro ao reproduzir o áudio');
+        }
+
+        audio.stop(() => {
+          setPlayAudio(!playAudio);
+        });
+      });
+
+      const timer = setInterval(() => {
+        audio.getCurrentTime(seconds => {
+          setSliderValue(seconds / audioDuration);
+        });
+      }, 1000);
+
+      setTimeout(() => {
+        clearInterval(timer);
+      }, audio.getDuration() * 1000);
+    });
+  };
 
   const progressEl = useRef<any>(null);
 
@@ -42,10 +82,9 @@ const ComplaintMessage: React.FC<IMessageProps> = ({message}) => {
 
   const handleOpenImage = useCallback((url): any => {
     console.log(url);
-    //do something
   }, []);
 
-  const handleAudioDuration = useCallback((seconds) => {
+  const handleAudioDuration = useCallback(seconds => {
     return new Date(seconds * 1000).toISOString().substr(14, 5);
   }, []);
 
@@ -90,14 +129,14 @@ const ComplaintMessage: React.FC<IMessageProps> = ({message}) => {
   );
 
   const handleAudioProgressComplete = useCallback(
-    async (value) => {
+    async value => {
       await audioRecorderPlayer.seekToPlayer(value);
       await audioRecorderPlayer.resumePlayer();
     },
     [audioRecorderPlayer],
   );
 
-  const handleOpenDocument = useCallback(async (path) => {
+  const handleOpenDocument = useCallback(async path => {
     await FileViewer.open(path);
   }, []);
 
@@ -109,17 +148,25 @@ const ComplaintMessage: React.FC<IMessageProps> = ({message}) => {
             <TouchableWithoutFeedback
               onPress={() => handleOpenImage(msg.media_url)}>
               <MessageImage
-                source={Platform.OS === 'ios' ? {uri: `file:///${msg.media_url}`} : {uri: `file://${msg.media_url}`}}
+                source={
+                  Platform.OS === 'ios'
+                    ? {uri: `file:///${msg.media_url}`}
+                    : {uri: `file://${msg.media_url}`}
+                }
               />
             </TouchableWithoutFeedback>
           )}
-          {msg.message_type === 'text' && (
-            <Text>{msg.data}</Text>
-          )}
+          {msg.message_type === 'text' && <Text>{msg.data}</Text>}
           {msg.message_type === 'document' && (
             <MessageDocumentContainer
               onPress={() => handleOpenDocument(msg.media_url)}>
-              <View style={{flex: 1, alignItems: 'center', justifyContent: 'flex-start', flexDirection: 'row'}}>
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: 'center',
+                  justifyContent: 'flex-start',
+                  flexDirection: 'row',
+                }}>
                 <Icon name="file" size={24} style={{marginRight: 8}} />
                 <MessageDocumentTitle>{msg.data}</MessageDocumentTitle>
               </View>
@@ -128,13 +175,7 @@ const ComplaintMessage: React.FC<IMessageProps> = ({message}) => {
           )}
           {msg.message_type === 'audio' && (
             <MessageAudio>
-              <MessageListen
-                onPress={async () =>
-                  await handlePlayAudio({
-                    mediaUrl: msg.media_url,
-                    mediaDuration: msg.media_duration,
-                  })
-                }>
+              <MessageListen onPress={async () => playAudioNew(msg.media_url, msg.media_duration)}>
                 {!playAudio ? (
                   <Icon name="play" size={24} color="#ffffff" />
                 ) : (
@@ -148,27 +189,20 @@ const ComplaintMessage: React.FC<IMessageProps> = ({message}) => {
                     : playTime}
                 </Text>
                 <Slider
-                  ref={progressEl}
-                  key={msg.id}
                   style={{width: 130}}
                   minimumValue={0}
-                  maximumValue={msg.media_duration}
+                  maximumValue={1}
                   minimumTrackTintColor="#FFFFFF"
                   maximumTrackTintColor="#000000"
-                  value={currentPositionSec}
-                  onValueChange={(value) => handleAudioPlayerValueChange(value)}
-                  onSlidingComplete={async (value) =>
-                    await handleAudioProgressComplete(value)
-                  }
+                  value={sliderValue}
                 />
               </MessageAudioProgressContainer>
             </MessageAudio>
           )}
-          <MessageInfo>
-            {`${format(new Date(msg.created_at), "dd/MM/yyyy' às ' HH:mm")}`}
-          </MessageInfo>
         </MessageContent>
-        {(msg.message_type === 'text' && msg.key_from_me === 'income') && <TextToAudio messageId={msg.id} key={msg.id} />}
+        {msg.message_type === 'text' && msg.key_from_me === 'income' && (
+          <TextToAudio messageId={msg.id} key={msg.id} />
+        )}
       </MessageItem>
     </MessageContainer>
   );

@@ -707,7 +707,7 @@ const NewCovidComplaint: React.FC = () => {
                     )}
                   </ContainerView>
 
-                  <NextStep onPress={() => handleSubmit()} enabled={!loading}>
+                  <NextStep onPress={() => handleSubmit()}>
                     {!loading ? (
                       <NextStepText>Enviar Pesquisa</NextStepText>
                     ) : (

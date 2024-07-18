@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
-import InnerPages from  '../../components/InnerPages';
+import React, {useState, useEffect, useCallback} from 'react';
+import {useRoute, RouteProp, useNavigation} from '@react-navigation/native';
+import InnerPages from '../../components/InnerPages';
 import AppLoadingState from '../../components/AppLoadingState';
-import { Formik, FieldArray } from 'formik';
-import { useAuth } from '../../hooks/auth';
-import { RadioButton } from 'react-native-paper';
-import CheckBox from '@react-native-community/checkbox';
-import { Alert } from 'react-native';
+import {Formik, FieldArray} from 'formik';
+import {useAuth} from '../../hooks/auth';
+import {RadioButton} from 'react-native-paper';
+import {Alert} from 'react-native';
 
 import api from '../../services/api';
 
@@ -34,7 +33,7 @@ type StackParamsList = {
   B: {
     id: string;
   };
-}
+};
 
 interface IAnswer {
   id: string;
@@ -55,7 +54,7 @@ interface IResearch {
   start_date: string;
   finish_date: string;
   status: string;
-  questions: IQuestion[]
+  questions: IQuestion[];
 }
 
 interface IAnswerForm {
@@ -65,44 +64,45 @@ interface IAnswerForm {
 
 const Research: React.FC = () => {
   const route = useRoute<RouteProp<StackParamsList, 'B'>>();
-  const { id } = route.params;
+  const {id} = route.params;
 
   const navigation = useNavigation();
 
-  const { worker } = useAuth();
+  const {worker} = useAuth();
 
   const [loading, setLoading] = useState(true);
   const [research, setResearch] = useState<IResearch>({} as IResearch);
 
-  const handleSubmitResearch = useCallback(async (values)=>{
-    try{
+  const handleSubmitResearch = useCallback(async values => {
+    try {
       await api.post('/research/worker-answer', values);
 
       navigation.reset({
         index: 0,
-        routes: [{ name: 'ResearchSuccess' }]
+        routes: [{name: 'ResearchSuccess'}],
       });
-
-    }catch(error){
-      Alert.alert('Não foi possível completar a sua solicitação. Por favor, tente novamente mais tarde.');
+    } catch (error) {
+      Alert.alert(
+        'Não foi possível completar a sua solicitação. Por favor, tente novamente mais tarde.',
+      );
     }
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     const loadData = async () => {
       const loadedResearch = await api.get(`/research/${id}`);
       setResearch(loadedResearch.data);
       setLoading(false);
     };
 
-    if(loading){
+    if (loading) {
       loadData();
     }
 
     return () => {
       setLoading(true);
       setResearch({} as IResearch);
-    }
+    };
   }, []);
 
   return (
@@ -114,24 +114,23 @@ const Research: React.FC = () => {
           </LoadingWrapper>
         )}
 
-        {(!loading && research) && (
+        {!loading && research && (
           <Formik
             initialValues={{
               workerId: worker.id,
               researchId: id,
               answers: [] as IAnswerForm[],
             }}
-            onSubmit={handleSubmitResearch}
-          >
-            {({ handleSubmit, values })=>(
+            onSubmit={handleSubmitResearch}>
+            {({handleSubmit, values}) => (
               <Content>
                 <TitleWrapper>
                   <Title>{research.title}</Title>
                 </TitleWrapper>
                 <FieldArray name="answers">
-                  {({ insert, replace, remove })=>(
+                  {({insert, replace, remove}) => (
                     <QuestionsContainer>
-                      {research.questions.map((question, index) => (
+                      {research.questions.map((question, index) =>
                         question.type === 'radio' ? (
                           <QuestionWrapper key={question.id}>
                             <QuestionText>{question.text}</QuestionText>
@@ -139,10 +138,18 @@ const Research: React.FC = () => {
                               <SelectContainer>
                                 <RadioContainer>
                                   <RadioButton.Group
-                                    onValueChange={value => replace(index, { questionId: question.id, answer: value })}
-                                    value={`${values.answers[index] ? values.answers[index].answer : ''}`}
-                                  >
-                                    {question.answers.map((answer)=>(
+                                    onValueChange={value =>
+                                      replace(index, {
+                                        questionId: question.id,
+                                        answer: value,
+                                      })
+                                    }
+                                    value={`${
+                                      values.answers[index]
+                                        ? values.answers[index].answer
+                                        : ''
+                                    }`}>
+                                    {question.answers.map(answer => (
                                       <RadioLabelContainer key={answer.id}>
                                         <RadioButton value={`${answer.text}`} />
                                         <RadioLabel>{answer.text}</RadioLabel>
@@ -159,28 +166,8 @@ const Research: React.FC = () => {
                             <AnswersWrapper>
                               <SelectContainer>
                                 <RadioContainer>
-                                  {question.answers.map((answer)=>(
+                                  {question.answers.map(answer => (
                                     <RadioLabelContainer key={answer.id}>
-                                      <CheckBox
-                                        value={false}
-                                        onValueChange={(value) => {
-                                          if(value){
-                                            return insert(index, { questionId: question.id, answer: answer.text });
-                                          }else{
-                                            return remove(index);
-                                          }
-                                        }}
-                                        style={{
-                                          transform: [
-                                            { scaleX: 0.8 },
-                                            { scaleY: 0.8 }
-                                          ],
-                                          marginLeft: 8,
-                                        }}
-                                        boxType="square"
-                                        onCheckColor="#006633"
-                                        onTintColor="#006633"
-                                        />
                                       <RadioLabel>{answer.text}</RadioLabel>
                                     </RadioLabelContainer>
                                   ))}
@@ -188,16 +175,15 @@ const Research: React.FC = () => {
                               </SelectContainer>
                             </AnswersWrapper>
                           </QuestionWrapper>
-                        )
-                      ))}
-                      </QuestionsContainer>
-                    )}
-                  </FieldArray>
+                        ),
+                      )}
+                    </QuestionsContainer>
+                  )}
+                </FieldArray>
 
                 <NextStep onPress={() => handleSubmit()}>
                   <NextStepText>Finalizar</NextStepText>
                 </NextStep>
-
               </Content>
             )}
           </Formik>

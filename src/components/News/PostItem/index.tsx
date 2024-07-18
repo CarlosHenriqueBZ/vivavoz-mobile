@@ -8,7 +8,8 @@ import {
   PostImage,
   PostInfo,
   PostTitle,
-  PostCategory
+  PostCategory,
+  PostCategoryChip
 } from './styles';
 
 interface ICategory {
@@ -52,7 +53,7 @@ const PostItem: React.FC<PostItemProps> = ({post, index})=>{
             <PostImage source={{uri: post.featured_image}} />
             <PostInfo  hasFeaturedImage={true}>
               <PostTitle hasFeaturedImage={true}>{post.title}</PostTitle>
-              <PostCategory>{post.categories.map((category)=>category.title).join(', ')}</PostCategory>
+              <PostCategoryChip>{post.categories.map((category)=>category.title).join(', ')}</PostCategoryChip>
               <PostCategory>{format(new Date(post.publishedAt), "dd/MM/yyyy 'às' HH:mm")}</PostCategory>
             </PostInfo>
             </>

@@ -511,7 +511,7 @@ const IsSyndicateApprovedFalse: React.FC<IProps> = ({handleLoading, handleWorker
             )}
 
             <NextStep onPress={() => handleSubmit()}>
-              <NextStepText>Solicitar sindicalização</NextStepText>
+              <NextStepText>Declarar Intresse</NextStepText>
             </NextStep>
           </FormContainer>
         )}

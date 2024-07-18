@@ -100,7 +100,6 @@ const SignIn: React.FC = () => {
               name="password"
               value={values.password}
               icon="lock"
-              maxLength={8}
               secureTextEntry
               returnKeyType="send"
               placeholder="Digite aqui a sua senha"

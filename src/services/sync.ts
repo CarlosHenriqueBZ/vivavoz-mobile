@@ -7,7 +7,7 @@ import api from '../services/api';
 import ComplaintsRepository from '../repositories/ComplaintsRepository';
 import Complaint from '../data/models/Complaint';
 
-export async function sync(complaints?: string[]) {
+export async function sync() {
   const complaintsRepository = new ComplaintsRepository(database);
   const allComplaints = await complaintsRepository.getAllComplaints();
 
@@ -15,7 +15,7 @@ export async function sync(complaints?: string[]) {
     (complaint: Complaint) => complaint.id,
   );
 
-  try{
+  try {
     await synchronize({
       database,
       pullChanges: async ({lastPulledAt}) => {
@@ -71,9 +71,8 @@ export async function sync(complaints?: string[]) {
       },
     });
   } catch (error) {
-    if(error instanceof Error){
+    if (error instanceof Error) {
       console.error(`Error: ${error.stack}`);
     }
   }
-
 }

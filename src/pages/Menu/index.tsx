@@ -65,7 +65,7 @@ const Menu: React.FC = () => {
                 <Icon name="chevron-right" size={24} color="#F38725" />
               </ShortcutButton>
 
-              <ShortcutButton onPress={() => navigation.navigate('Sindicato')}>
+              <ShortcutButton onPress={() => navigation.navigate('About')}>
                 <ShortcutDetail>
                   <ShortcutDeatailIcon>
                     <Icon name="help-circle" size={24} color="#F38725" />

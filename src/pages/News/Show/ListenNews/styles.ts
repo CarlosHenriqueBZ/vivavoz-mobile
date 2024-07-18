@@ -3,7 +3,6 @@ import styled from 'styled-components/native';
 
 export const Container = styled.View`
   margin: 16px 0;
-  background: #edeef0;
   padding: 16px 24px;
   border-radius: 8px;
   border-color: #ccc;
@@ -25,3 +24,4 @@ export const ListenText = styled.Text`
   font-size: 16px;
   font-family: 'AvenirNextLTPro-Demi';
 `;
+

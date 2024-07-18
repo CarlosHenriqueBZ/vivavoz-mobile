@@ -36,10 +36,8 @@ export const MessageListen = styled(RectButton)`
   height: 56px;
   border-radius: 28px;
   background-color: #006633;
-
   align-items: center;
   justify-content: center;
-
   margin: 0 8px;
 `;
 
