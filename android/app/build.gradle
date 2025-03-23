@@ -49,8 +49,8 @@ android {
         applicationId "com.app.vivavoz"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 27
-        versionName "1.0.27"
+        versionCode 45
+        versionName "1.0.45"
     }
     splits {
         abi {
